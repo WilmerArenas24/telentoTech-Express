@@ -36,12 +36,12 @@ const HouseSchema = new mongoose.Schema({
 
     },
     rooms: {
-        type: String, 
+        type: Number, 
         required: true
 
     },
     bathrooms: {
-        type: String, 
+        type: Number, 
         required: true
 
     },
@@ -55,6 +55,12 @@ const HouseSchema = new mongoose.Schema({
         required: true
 
     },
+    code: {
+        type: String, 
+        required: true,
+        unique: true
+
+    },
     image: {
         type: String, 
         required: true
@@ -63,6 +69,4 @@ const HouseSchema = new mongoose.Schema({
 })
 
 //creando el modelo para validar el departamento
-
-
 module.exports = mongoose.model('house', HouseSchema) 

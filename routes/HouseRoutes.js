@@ -7,18 +7,30 @@ router.get('/house', async (req, res) => {
     res.send('hola que tal');
 });
 
+// Ruta POST para agregar una nueva casa
 router.post('/house', async (req, res) => {
     try {
+        // Crear una nueva instancia del modelo HouseSchema con los datos proporcionados en el cuerpo de la solicitud
         let house = new HouseSchema({
             address: req.body.address,
-            city: req.body.city
+            city: req.body.city,
+            state: req.body.state,
+            size: req.body.size,
+            type: req.body.type,
+            zip_code: req.body.zip_code,
+            rooms: req.body.rooms,
+            bathrooms: req.body.bathrooms,
+            parking: req.body.parking,
+            price: req.body.price,
+            code: req.body.code,
+            image: req.body.image
         });
-
-        // Guardar la casa en la base de datos
+        // Guardar la instancia de la casa en la base de datos y esperar a que se complete la operación
         const result = await house.save();
-
+        // Enviar la respuesta con los datos de la casa recién creada
         res.send(result);
     } catch (err) {
+        // En caso de error, registrar el error en la consola y enviar una respuesta de error al cliente
         console.error(err);
         res.status(500).send({ status: 'error' });
     }
@@ -30,6 +42,26 @@ router.get('/house-obtener', async (req, res) => {
     let house = await HouseSchema.find(); 
     res.json(house)
 })
+
+
+// Ruta DELETE para eliminar una casa por su ID
+router.delete('/house/:id', (req, res) => {    
+    // Obtener el ID de los parámetros de la solicitud
+    var id = req.params.id
+
+    // Eliminar una casa en la base de datos utilizando el modelo HouseSchema
+    HouseSchema.deleteOne({_id: id}).then(() => {        
+        // Enviar una respuesta JSON si la eliminación fue exitosa
+        res.json({"status": "success", "message": "House deleted successfully"})    
+    }).catch((error) => {        
+        // En caso de error, registrar el error en la consola y enviar una respuesta JSON indicando el fallo
+        console.log(error)
+        res.json({"status": "failed", "message": "Error deleting House"})    
+    })
+})
+
+
+
 
 
 
