@@ -30,7 +30,11 @@ router.post('/message', async (req, res) => {
     user.save().then((result)=>{
         res.send(result)
     }).catch((err)=>{
-        res.send({"status": "error","message": err.message})
+        if(err.code == 11000){
+            res.send({'status':'error', 'message': 'chat ya fue registrado'})
+        }else{
+            res.send({'status':'error', 'message':err.message})
+        }
     })
 });
 

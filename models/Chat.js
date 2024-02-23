@@ -23,7 +23,6 @@ const MessageSchema = new mongoose.Schema({
             ref: 'message'
         }],
         required: true
-
     }
 }, {
     timestamps: true // Agrega timestamps automáticamente (createdAt, updatedAt)
