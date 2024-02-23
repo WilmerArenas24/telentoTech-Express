@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./static/estilos_chat.css">
+    <title>test</title>
+</head>
+<body>
+       <div>
+        <h1> Mensaje en tiempo real</h1>
+          <div id="mensajes">
+
+               
+          </div>
+
+          <div>
+            <textarea name="envio-mensajes" id="" cols="30" rows="10"></textarea>
+            <br>
+            <button type="button" id="send">Enviar</button>
+          </div>
+       </div>
+    
+</body>
+
+<!--libreria de socket.io con CDN-->
+<script src="https://cdn.socket.io/4.7.4/socket.io.min.js" integrity="sha384-Gr6Lu2Ajx28mzwyVR8CFkULdCU7kMlZ9UthllibdOSo6qAiN+yXNHqtgdTvFXMT4" crossorigin="anonymous"></script>
+ <!--libreria jquery para manipular el dom-->
+ <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+ <!--Conctandonos con sockets de nuestro proyecto-->
+ <script>
+    $(document).ready(function(){
+        var socket = io('http://localhost:3000',{
+            transports:['websocket']
+        });
+
+        socket.on('connect', function(){
+            console.log("connected");
+        });
+
+        // Escuchando eventos desde el servidor
+        socket.on('message-receipt', function(data){
+            addMessages(data);  // Llamando a la función con el parámetro correcto
+        });
+    });
+
+    function addMessages(data) {  // Corrigiendo el nombre del parámetro
+        const messageElement = document.createElement('li');
+        messageElement.textContent = data.message;  // Corrigiendo el acceso a la propiedad
+
+        const messagesDiv = document.getElementById('mensajes');
+        messagesDiv.appendChild(messageElement);
+    }
+</script>
+
+</html>

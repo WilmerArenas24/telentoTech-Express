@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 const UserSchema = require('./User');
-const UserSchema = require('./Message');
+const MessageSchema = require('./Message');
 
 // Definición del esquema para la colección de chats
-const ChatSchema = new mongoose.Schema({
+const MessageSchema = new mongoose.Schema({
     // Campo 'from' que almacena el ObjectId del usuario que envía el mensaje
     from: {
         type: mongoose.Schema.Types.ObjectId,
@@ -30,4 +30,4 @@ const ChatSchema = new mongoose.Schema({
 });
 
 // Exporta el modelo 'chat' basado en el esquema ChatSchema
-module.exports = mongoose.model('chat', ChatSchema);
+module.exports = mongoose.model('chat', MessageSchema);

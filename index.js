@@ -14,7 +14,8 @@ const mongoose = require('mongoose'); // Importo la libreria mongoose
 mongoose.connect(DB_URL) // Creo la cadena de conexion
 
 const userRoutes = require('./routes/UserRoutes');
-const houseRoutes = require('./routes/HouseRoutes'); // Importa las rutas de casas
+const houseRoutes = require('./routes/HouseRoutes');
+const messageRoutes = require('./routes/MessageRoutes'); // Importa las rutas de casas
 
 //Metodo [GET, POST, PUT, PATCH, DELETE]
 // Nombre del servicio [/]
@@ -24,14 +25,22 @@ router.get('/', (req, res) => {
 })
 
 //implementando las funciones de websocket
-io.on('connect',(socket)=>{
-    console.log('Connected')
-    //escuchando eventos desde el servidor
-    socket.on('message',(data)=>{
-        console.log(data)
-        
-        //enviando mensajes alcliente
-        socket.emit('message-receipt', {'message':'Mensaje recibido desde el servidor'})
+io.on('connect', (socket) => {
+    console.log("connected")
+    //Escuchando eventos desde el servidor
+    socket.on('message', (data) => {
+        /** Almacenando el mensaje en la BD */
+        var payload = JSON.parse(data)
+        console.log(payload)
+        MessageSchema(payload).save().then((result) => {
+            socket.emit('message-receipt', {"message": "Mensaje almacenado"})
+        }).catch((err) => {
+            console.log({"status" : "error", "message" :err.message})
+        })        
+    })
+
+    socket.on('disconnect', (socket) => {
+        console.log("disconnect")    
     })
 })
 
@@ -48,6 +57,7 @@ app.use((req, res, next)=>{
 app.use(router)
 app.use('/', userRoutes)
 app.use('/', houseRoutes)
+app.use('/', messageRoutes)
 app.use('/uploads', express.static('uploads')); // para acceder desde el navegador, debemos copiar la ruta de avatar cuando se llama desde postman
 http.listen(port, () => {
     console.log('Listen on ' + port)

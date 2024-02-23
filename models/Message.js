@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const UserSchema = require('../models/User');
+const UserSchema = require('./User');
 
 // Definición del esquema para la colección de mensajes
 const MessageSchema = new mongoose.Schema({
@@ -11,14 +11,14 @@ const MessageSchema = new mongoose.Schema({
 
     // Usuario que envía el mensaje
     from: {
-        type: UserSchema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'user', // Referencia al modelo de usuarios
         required: true
     },
 
     // Usuario que recibe el mensaje
     to: {
-        type: UserSchema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'user', // Referencia al modelo de usuarios
         required: true
     },
@@ -26,7 +26,6 @@ const MessageSchema = new mongoose.Schema({
     // Estado de lectura del mensaje
     readed: {
         type: Boolean,
-        required: true,
         default: false
     }
 }, {
