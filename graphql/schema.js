@@ -1,49 +1,40 @@
-const { buildSchema } = require('graphql');
+const { GraphQLID,
+    buildSchema,
+     GraphQLObjectType, 
+     GraphQLString, 
+     GraphQLID,
+    GraphQLBoolean } = require('graphql');
+const resolvers = require('./resolvers');
 
-const schema = buildSchema(`
-    type User {
-        id: ID!
-        name: String!
-        lastname:String!
-        email:String!
-        avatar:String!
-    }
+const User = new GraphQLObjectType(
+    {
+        name: 'User',
+        fields:{
+            _id:{type: GraphQLID},
+            name:{type: GraphQLString},
+            lastname:{type: GraphQLString},
+            email:{type: GraphQLString},
+            avatar:{type: GraphQLString},
+        }
 
-    type Message{
-        id:ID!
-        body:String!
-        from:User!
-        to:User!
-        readed:Boolean
     }
+)
 
-    type House{
-        id: ID!
-        address:String!
-        city:String!
-        state:String!
-        size:int!
-        type:String!
-        zip_code:String!
-        code:String!
-        rooms:int!
-        batrooms:int!
-        price:int!
-        image:String!
-    }
+const Message = new GraphQLObjectType(
+    {
+        name: 'Message',
+        fields:{
+            _id:{type: GraphQLID},
+            body:{type: GraphQLString},
+            from:{type: User},
+            to:{type: User},
+            readed:{type: GraphQLBoolean},
+        }
 
-    type Query{
-        getUser(id:ID!): User
-        getUsers: [User]
-        hello: String
-        UserByFilter(filter: UserFilterInput): [User]
     }
+)
 
-    inpit UserFilterInput{
-        mail: String
-        email:String
-        lastname:String
-    }
-`);
+
+
 
 module.exports = schema
