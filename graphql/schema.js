@@ -33,10 +33,16 @@ const schema = buildSchema(`
     }
 
     type Query{
-        // getUser(id:ID!): User
-        // getUsers: [User]
+        getUser(id:ID!): User
+        getUsers: [User]
         hello: String
+        UserByFilter(filter: UserFilterInput): [User]
+    }
 
+    inpit UserFilterInput{
+        mail: String
+        email:String
+        lastname:String
     }
 `);
 
