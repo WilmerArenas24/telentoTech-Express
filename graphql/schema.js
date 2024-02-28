@@ -4,7 +4,8 @@ const { GraphQLObjectType,
         GraphQLBoolean, 
         graphql,
         GraphQLInputObjectType,
-        GraphQLList} = require('graphql');
+        GraphQLList,
+        GraphQLSchema} = require('graphql');
 const resolvers = require('./resolvers');
 
 const User = new GraphQLObjectType(
@@ -35,7 +36,7 @@ const Message = new GraphQLObjectType(
     }
 )
 
-const UserFilterInput = GraphQLInputObjectType({
+const UserFilterInput = new GraphQLInputObjectType({
     name:"UserFilterInput",
     fields:{
         name: {type: GraphQLString},
@@ -64,12 +65,13 @@ const queries = {
 
     UsersByFilter: {
         type: GraphQLList(User),
-        resolve: resolvers.UserByFilter,
+        resolve: resolvers.UsersByFilter,
         args: {
             filter: {type: UserFilterInput}
         }
     }
 }
+
 
 //TODO: Implementar house en graphqltype
 //type House{
@@ -86,5 +88,14 @@ const queries = {
 //     price:int!
 //     image:String!
 // }
+
+const queryType = new GraphQLObjectType({
+    name: 'Query',
+    fields: queries
+})
+
+const schema = new GraphQLSchema({
+    query: queryType
+})
 
 module.exports = schema

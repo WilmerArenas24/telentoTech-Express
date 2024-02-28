@@ -23,7 +23,7 @@ const resolvers = {
         }
     },
 
-    UserByFilter: async({filter})=>{
+    UsersByFilter: async({filter})=>{
         try {
             let query = {};
             
