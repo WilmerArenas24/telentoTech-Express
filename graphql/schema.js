@@ -1,9 +1,9 @@
-const { GraphQLID,
-    buildSchema,
-     GraphQLObjectType, 
-     GraphQLString, 
-     GraphQLID,
-    GraphQLBoolean } = require('graphql');
+const { GraphQLObjectType, 
+        GraphQLString, 
+        GraphQLID,
+        GraphQLBoolean, 
+        graphql,
+        GraphQLInputObjectType} = require('graphql');
 const resolvers = require('./resolvers');
 
 const User = new GraphQLObjectType(
@@ -34,7 +34,29 @@ const Message = new GraphQLObjectType(
     }
 )
 
+const UserFilterInput = GraphQLInputObjectType({
+    name:"UserFilterInput",
+    fields:{
+        name: {type: GraphQLString},
+        lastname: {type: GraphQLString},
+        email: {type: GraphQLString},
+    }
+})
 
-
+//TODO: Implementar house en graphqltype
+//type House{
+//     id: ID!
+//     address:String!
+//     city:String!
+//     state:String!
+//     size:int!
+//     type:String!
+//     zip_code:String!
+//     code:String!
+//     rooms:int!
+//     batrooms:int!
+//     price:int!
+//     image:String!
+// }
 
 module.exports = schema
