@@ -21,6 +21,10 @@ const messageRoutes = require('./routes/MessageRoutes');
 
 const MessageSchema = require('./models/Message');
 
+// graphql importando librerias
+const {createYoga} = require('graphql-yoga');
+const schema = require('./graphql/schema')
+
 //Metodo [GET, POST, PUT, PATCH, DELETE]
 // Nombre del servicio [/]
 router.get('/', (req, res) => {
@@ -57,6 +61,11 @@ app.use((req, res, next) => {
     res.io = io
     next()
 })
+
+// graphql
+const yoga = new createYoga({schema});
+app.use('/graphql', yoga);
+
 //Ejecuto el servidor
 app.use(router)
 app.use('/uploads', express.static('uploads'));
