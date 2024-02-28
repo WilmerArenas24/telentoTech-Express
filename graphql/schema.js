@@ -3,7 +3,8 @@ const { GraphQLObjectType,
         GraphQLID,
         GraphQLBoolean, 
         graphql,
-        GraphQLInputObjectType} = require('graphql');
+        GraphQLInputObjectType,
+        GraphQLList} = require('graphql');
 const resolvers = require('./resolvers');
 
 const User = new GraphQLObjectType(
@@ -42,6 +43,33 @@ const UserFilterInput = GraphQLInputObjectType({
         email: {type: GraphQLString},
     }
 })
+
+const queries = {
+    hello: {
+        type: GraphQLString,
+        resolve: resolvers.hello
+    },
+    User:{
+        type: User,
+        resolve: resolvers.User,
+        args: {
+            id:{type: GraphQLID}
+        }
+    },
+
+    Users:{
+        type: GraphQLList(User),
+        resolve: resolvers.Users
+    },
+
+    UsersByFilter: {
+        type: GraphQLList(User),
+        resolve: resolvers.UserByFilter,
+        args: {
+            filter: {type: UserFilterInput}
+        }
+    }
+}
 
 //TODO: Implementar house en graphqltype
 //type House{
