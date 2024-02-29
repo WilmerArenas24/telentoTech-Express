@@ -1,4 +1,6 @@
-const UserSchema = require ('../models/User')
+const UserSchema = require ('../models/User');
+const HouseSchema = require ('../models/House');
+const MessageSchema = require ('../models/Message');
 const resolvers = {
     // funcion hello
     hello: ()=>{
@@ -6,7 +8,7 @@ const resolvers = {
     },
 // funcion User
 
-    User: async({id}) =>{
+    User: async(_, {id}) =>{
         try{
             return user = await UserSchema.findById(id);
         } catch(e){
@@ -22,8 +24,8 @@ const resolvers = {
             console.error(`Error al buscar todos los usuarios: ${e.message}`);
         }
     },
-
-    UsersByFilter: async({filter})=>{
+// funcion filtro de usuario
+    UsersByFilter: async(_, {filter})=>{
         try {
             let query = {};
             
@@ -43,13 +45,71 @@ const resolvers = {
             }
         } catch (e) {
 
-            console.log('Error obteniendo el usuario')
-            
+            console.log('Error obteniendo el usuario')            
         }
-    }
+    },
 
+    //Funcion para obtener mensajes
 
+    Message: async (_, {id}) => {
+        try {
+            return message = await MessageSchema.findById(id).populate({
+                path: 'from',
+                select: '-password'})
+            .populate({
+                path: 'to',
+                select: '-password'}) ;
+        }catch(e){
+            console.log()
+        }
+    },
+    Messages: async () => {
+        try{
+            return await MessageSchema.find().populate({
+                path: 'from',
+                select: '-password'})
+            .populate({
+                path: 'to',
+                select: '-password'});
+        }
+        catch(e){
+            console.log(e)
+        }
+    }, 
+    MessagesByFilter: async (_, {filter}) => {
+        try{
+            let query = {};
+            if(filter){
+                if(filter.from){
+                    query= {from: filter.from} 
+                }
+                if(filter.to){
+                    query = { to: filter.to}
+                }
+                if(filter.body){
+                    query.body = { $regex: filter.body, $options: 'i'}
+                }
 
+                const message = await MessageSchema.find(query).populate('from')
+                                        .populate('to') 
+                return message;
+            }
+
+        }catch(e){
+            console.log("Error obteniendo el mensaje")
+        }
+    },
+
+    // funcion para casas
+    // funcion Users
+
+    Houses: async()=>{
+        try{
+            return await HouseSchema.find();
+        }catch(e){
+            console.error(`Error al buscar todas las casas: ${e.message}`);
+        }
+    },
 }
 
 module.exports = resolvers

@@ -5,7 +5,8 @@ const { GraphQLObjectType,
         graphql,
         GraphQLInputObjectType,
         GraphQLList,
-        GraphQLSchema} = require('graphql');
+        GraphQLSchema,
+        GraphQLInt} = require('graphql');
 const resolvers = require('./resolvers');
 
 const User = new GraphQLObjectType(
@@ -22,20 +23,6 @@ const User = new GraphQLObjectType(
     }
 )
 
-const Message = new GraphQLObjectType(
-    {
-        name: 'Message',
-        fields:{
-            _id:{type: GraphQLID},
-            body:{type: GraphQLString},
-            from:{type: User},
-            to:{type: User},
-            readed:{type: GraphQLBoolean},
-        }
-
-    }
-)
-
 const UserFilterInput = new GraphQLInputObjectType({
     name:"UserFilterInput",
     fields:{
@@ -44,6 +31,49 @@ const UserFilterInput = new GraphQLInputObjectType({
         email: {type: GraphQLString},
     }
 })
+
+const Message = new GraphQLObjectType({
+    name: 'Message',
+    fields: {
+      _id: { type: GraphQLString},
+      body: { type: GraphQLString},
+      from: { type: User},
+      to: { type: User},
+      readed: {type: GraphQLBoolean}
+    }
+  })
+
+  const MessageFilterInput = new GraphQLInputObjectType({
+    name: 'MessageFilterInput',
+    fields: {
+      body: {type: GraphQLString},
+      from: {type: GraphQLString},
+      to: {type: GraphQLString}
+    }
+  })
+  const House = new GraphQLObjectType(
+    {
+        name: 'House',
+        fields:{
+            _id:{type: GraphQLID},
+            address:{type: GraphQLString},
+            city:{type: GraphQLString},
+            state:{type: GraphQLString},
+            size:{type: GraphQLInt},
+            type:{type: GraphQLString},
+            zip_code:{type: GraphQLString},
+            code:{type: GraphQLString},
+            rooms:{type: GraphQLInt},
+            batrooms:{type: GraphQLInt},
+            price:{type: GraphQLInt},
+            image:{type: GraphQLString},
+
+
+        }
+
+    }
+)
+
 
 const queries = {
     hello: {
@@ -62,6 +92,10 @@ const queries = {
         type: GraphQLList(User),
         resolve: resolvers.Users
     },
+    Houses:{
+        type: GraphQLList(House),
+        resolve: resolvers.Houses
+    },
 
     UsersByFilter: {
         type: GraphQLList(User),
@@ -69,25 +103,30 @@ const queries = {
         args: {
             filter: {type: UserFilterInput}
         }
-    }
+    },
+
+    // implementando la queries de mensajes
+    Message: {
+        type: Message,
+        resolve: resolvers.Message,
+        args: {
+          id: {type: GraphQLString}
+        }
+      },
+      Messages: {
+        type: GraphQLList(Message),
+        resolve: resolvers.Messages
+      },
+      MessagesByFilter: {
+        type: GraphQLList(Message),
+        resolve: resolvers.MessagesByFilter,
+        args: {
+          filter: { type: MessageFilterInput }
+        }
+      }
 }
 
 
-//TODO: Implementar house en graphqltype
-//type House{
-//     id: ID!
-//     address:String!
-//     city:String!
-//     state:String!
-//     size:int!
-//     type:String!
-//     zip_code:String!
-//     code:String!
-//     rooms:int!
-//     batrooms:int!
-//     price:int!
-//     image:String!
-// }
 
 const queryType = new GraphQLObjectType({
     name: 'Query',
