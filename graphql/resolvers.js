@@ -121,7 +121,7 @@ const resolvers = {
     },
 
     // funcion para filtrar casas
-    // funcion filtro de usuario
+    
     HousesByFilter: async(_, {filter})=>{
         try {
             let query = {};
@@ -137,12 +137,12 @@ const resolvers = {
                     query.price = {$regex: filter.price, $options: 'i'}
                 }
 
-                const users = await UserSchema.find(query)
-                return users;
+                const Houses = await HouseSchema.find(query)
+                return Houses;
             }
         } catch (e) {
 
-            console.log('Error obteniendo el usuario')            
+            console.log('Error obteniendo la casa')            
         }
     },
 }
