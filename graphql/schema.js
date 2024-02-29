@@ -1,5 +1,6 @@
 const { GraphQLObjectType, 
         GraphQLString, 
+
         GraphQLID,
         GraphQLBoolean, 
         graphql,
@@ -32,6 +33,16 @@ const UserFilterInput = new GraphQLInputObjectType({
     }
 })
 
+const HouseFilterInput = new GraphQLInputObjectType({
+    name:"HouseFilterInput",
+    fields:{
+        code: {type: GraphQLString},
+        city: {type: GraphQLString},
+        price: {type: GraphQLInt},
+    }
+})
+
+
 const Message = new GraphQLObjectType({
     name: 'Message',
     fields: {
@@ -51,6 +62,8 @@ const Message = new GraphQLObjectType({
       to: {type: GraphQLString}
     }
   })
+
+  // cuerpo para traer las casa
   const House = new GraphQLObjectType(
     {
         name: 'House',
@@ -74,7 +87,6 @@ const Message = new GraphQLObjectType({
     }
 )
 
-
 const queries = {
     hello: {
         type: GraphQLString,
@@ -83,6 +95,14 @@ const queries = {
     User:{
         type: User,
         resolve: resolvers.User,
+        args: {
+            id:{type: GraphQLID}
+        }
+    },
+
+    House:{
+        type: House,
+        resolve: resolvers.House,
         args: {
             id:{type: GraphQLID}
         }
@@ -102,6 +122,14 @@ const queries = {
         resolve: resolvers.UsersByFilter,
         args: {
             filter: {type: UserFilterInput}
+        }
+    },
+
+    HousesByFilter: {
+        type: GraphQLList(House),
+        resolve: resolvers.HousesByFilter,
+        args: {
+            filter: {type: HouseFilterInput}
         }
     },
 

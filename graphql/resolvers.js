@@ -15,6 +15,16 @@ const resolvers = {
             console.error(`Error al buscar el usuario por ID: ${e.message}`);
         }
     },
+
+    // funcion House
+
+    House: async(_, {id}) =>{
+        try{
+            return House = await HouseSchema.findById(id);
+        } catch(e){
+            console.error(`Error al buscar el usuario por ID: ${e.message}`);
+        }
+    },
 // funcion Users
 
     Users: async()=>{
@@ -101,13 +111,38 @@ const resolvers = {
     },
 
     // funcion para casas
-    // funcion Users
-
+    
     Houses: async()=>{
         try{
             return await HouseSchema.find();
         }catch(e){
             console.error(`Error al buscar todas las casas: ${e.message}`);
+        }
+    },
+
+    // funcion para filtrar casas
+    // funcion filtro de usuario
+    HousesByFilter: async(_, {filter})=>{
+        try {
+            let query = {};
+            
+            if(filter){
+                if(filter.code){
+                    query.code = {$regex: filter.code, $options: 'i'} // 'i' se usa para que no importe mayuscula o minuscula
+                }
+                if(filter.city){
+                    query.city = {$regex: filter.city, $options: 'i'}
+                }
+                if(filter.price){
+                    query.price = {$regex: filter.price, $options: 'i'}
+                }
+
+                const users = await UserSchema.find(query)
+                return users;
+            }
+        } catch (e) {
+
+            console.log('Error obteniendo el usuario')            
         }
     },
 }
