@@ -77,3 +77,6 @@ app.use('/', messageRoutes)
 http.listen(port, () => {
     console.log('Listen on ' + port)
 })
+
+// exportando para hacer test en el archivo tst.js
+module.exports = http
