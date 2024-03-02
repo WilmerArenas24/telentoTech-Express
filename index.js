@@ -20,6 +20,7 @@ const houseRoutes = require('./routes/HouseRoutes');
 const messageRoutes = require('./routes/MessageRoutes');
 
 const MessageSchema = require('./models/Message');
+const departments = require('./read_file'); // 3 importando la ruta para leer archivo en el servicio web
 
 // graphql importando librerias
 const {createYoga} = require('graphql-yoga');
@@ -72,6 +73,7 @@ app.use('/uploads', express.static('uploads'));
 app.use('/', userRoutes)
 app.use('/', houseRoutes)
 app.use('/', messageRoutes)
+app.use('/', departments) // 4 leyendo el archivo en el servicio web mediante la ruta
 
 /** Ejecucion del servidor */
 http.listen(port, () => {
