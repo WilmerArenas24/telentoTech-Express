@@ -39,7 +39,7 @@ router.post('/user', async (req, res) => {
         res.send(result)
     }).catch((err) => {
         if(err.code == 11000){
-            res.send({"status" : "error", "message" :"El correo ya fue registrado"})      
+            res.send({"status" : "error", "message" :"El Id o correo ya fueron registrados"})      
         }else{
             res.send({"status" : "error", "message" :err.message})      
         }

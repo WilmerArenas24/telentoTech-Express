@@ -3,6 +3,9 @@
 const fs = require('fs');
 const express = require('express');
 const router = express.Router();
+const path = require('path')
+
+
 
 router.get('/departments', (req,res) =>{
 
@@ -17,6 +20,37 @@ router.get('/departments', (req,res) =>{
     })
 
 })
+
+router.post('/departments', (req, res) => {
+    const filePath = path.join(__dirname, 'departments.json');
+
+    fs.readFile(filePath, 'utf8', (readErr, data) => {
+        if (readErr) {
+            console.error('Error al leer el archivo:', readErr);
+            res.status(500).send(readErr);
+            return;
+        }
+
+        try {
+            const departments = JSON.parse(data);
+            departments.push(req.body);
+
+            fs.writeFile(filePath, JSON.stringify(departments), (writeErr) => {
+                if (writeErr) {
+                    console.error('Error al escribir en el archivo:', writeErr);
+                    res.status(500).send(writeErr);
+                    return;
+                }
+
+                res.send(req.body);
+            });
+        } catch (parseError) {
+            console.error('Error al parsear el archivo JSON:', parseError);
+            res.status(500).send('Error al parsear el archivo JSON');
+        }
+    });
+});
+
 
 module.exports = router // 2  exportando rutas
 
