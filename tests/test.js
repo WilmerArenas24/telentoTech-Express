@@ -1,113 +1,69 @@
-const request = require('supertest'); // libreria para test
-const app = require('../index.js'); //importando todas las rutas
+const request = require('supertest'); // Libreria para probar APIs
+const app = require('../index.js'); // importando todas las rutas
 
-// creando variables globales para poder probar el codigo con el test
 const objectToTest = {
-    "id": 11177723123,
-    "name": "Maria",
-    "lastname": "Zuleta",
-    "email": "Maria-zuleta-001@gmail.com",
-    "password": "usuarioprueba"
-}
+        "address": "Cr13 H 11 12 Sur",
+        "city": "Bogota",
+        "state": "Bogota",
+        "size": 1000,
+        "type": "House",
+        "zip_code": "8795",
+        "rooms": 1,
+        "bathrooms": 1,
+        "parking": true,
+        "price": 35000000,
+        "code": "ABC7848",
+        "image": "https://example2.com/property-image.jpg"
+};
 
-let userId;
-let token;
-
-describe('POST /user', () => {
-    it('responds with an error message for a duplicate user', async () => {
-
-        const response = await request(app).post('/user').send(objectToTest);
-        userId = response.body._id     
-
-        expect(response.status).toBe(200);
-        expect(response.body).toHaveProperty('message', "El Id o correo ya fueron registrados");
-        expect(response.body).toHaveProperty('status', 'error');
-    });
-});
-
-// mi codigo
-
-
+/** Descripcion de la Prueba */
 describe('GET /', () => {
-    it('responds with status 200', async () => { // Cambié "asyn" a "async"
-        const response = await request(app).get('/');
+    /** Descripcion especifica del caso a probar */
+    it('responds with status 200', async () => {
+        /** Simulando la solicitud HTTP */
+        const response = await request(app).get('/');    
+        /** Defino los valores esperados */    
         expect(response.status).toBe(200);
-        expect(response.text).toBe('Hello world'); // Corregí "word" a "world"
-    })
-    // test para la ruta de usuarios 
-    it('responds with an array object that contains an specific user', async () => { // Cambié "asyn" a "async"
-        const response = await request(app).get('/user');
-        
-        const objectToTest = {
-            "_id": "65cfe1fe297a14a9e28374a0",
-            "id": 12,
-            "name": "prueba correo actualizacion 3",
-            "lastname": "Prueba 3",
-            "email": "Pruebaactualizacion@gmail.com",
-            "password": "$2b$10$SoXw71E6nElIj.Hc2vOjS.ndM14coogxGdvfPo.YrVQXQZhhwhcSe",
-            "__v": 0,
-            "avatar": "uploads\\1708390891252-gato.png"
-        };
-        
-        expect(Array.isArray(response.body)).toBe(true);
-        expect(response.body).toEqual(expect.arrayContaining([objectToTest])); 
     })
 
-       // test para la ruta de usuarios 
-    it('responds with an array object that contains an specific user', async () => { // Cambié "asyn" a "async"
-        const response = await request(app).get('/user');
-        
-        const objectToTest = {
-            "_id": "65cfe1fe297a14a9e28374a0",
-            "id": 12,
-            "name": "prueba correo actualizacion 3",
-            "lastname": "Prueba 3",
-            "email": "Pruebaactualizacion@gmail.com",
-            "password": "$2b$10$SoXw71E6nElIj.Hc2vOjS.ndM14coogxGdvfPo.YrVQXQZhhwhcSe",
-            "__v": 0,
-            "avatar": "uploads\\1708390891252-gato.png"
-        };
-        
-        expect(Array.isArray(response.body)).toBe(true);
-        expect(response.body).toEqual(expect.arrayContaining([objectToTest])); 
-    })
-
-           // test para la ruta de usuarios 
-           it('responds with an array object that contains an specific user', async () => { // Cambié "asyn" a "async"
-            const id = "65cfe1fe297a14a9e28374a0";      
-            const response = await request(app).get('/user/'+id);
-             
+        // test para la ruta para obtener las casas
+        it('responds with an array object that contains an specific house', async () => { 
+            const response = await request(app).get('/house-obtener');
+            
             const objectToTest = {
-                "_id": "65cfe1fe297a14a9e28374a0",
-                "id": 12,
-                "name": "prueba correo actualizacion 3",
-                "lastname": "Prueba 3",
-                "email": "Pruebaactualizacion@gmail.com",
-                "password": "$2b$10$SoXw71E6nElIj.Hc2vOjS.ndM14coogxGdvfPo.YrVQXQZhhwhcSe",
-                "__v": 0,
-                "avatar": "uploads\\1708390891252-gato.png"
+                "_id": "65ea31365db6982faf31f152",
+                "address": "Cr13 H 29 09 Sur",
+                "city": "Villavicencio",
+                "state": "Meta",
+                "size": 1000,
+                "type": "Apartamento",
+                "zip_code": "123456",
+                "rooms": 1,
+                "bathrooms": 1,
+                "parking": true,
+                "price": 35000000,
+                "code": "ABC888",
+                "image": "https://example2.com/property-image.jpg",
+        "__v": 0
             };
-            expect(response.status).toBe(200);
-            expect(typeof response.body === "object").toBe(true);
-            expect(response.body).toStrictEqual(objectToTest); 
-        });
+            
+            expect(Array.isArray(response.body)).toBe(true);
+            expect(response.body).toEqual(expect.arrayContaining([objectToTest])); 
+        })
+    
+})
 
-    
-//fin mi codigo
-        
-        //TODO: Implementar el test de login y delete
-        // describe('POST /login', () => {
-        //     it('Succes login with email and password', async () => {
-        //         const user = {
-        //             "email": ""
-        //         }
-        
-        //         const response = await request(app).post('/user').send(newUser);
-        
-        //         expect(response.status).toBe(200);
-        //         expect(response.body).toHaveProperty('message', 'El correo ya fue registrado');
-        //         expect(response.body).toHaveProperty('status', 'error');
-        //     });
-        // });
-    
-});
+describe('POST /house', () => {
+    it('create a new house in the DB and response with the data', async () => {
+        const response = await request(app).post('/house').send(objectToTest)
+        /** Asignando el _id del usuario nuevo a la variable userId 
+         *  para ser usanda en las otras pruebas */
+        userId = response.body._id;
+
+        expect(response.statusCode).toBe(200)
+        expect(response.body).toHaveProperty('_id')
+        expect(response.body.name).toBe(objectToTest.name)
+        expect(response.body.lastname).toBe(objectToTest.lastname)
+        expect(response.body.email).toBe(objectToTest.email)
+    })
+})
