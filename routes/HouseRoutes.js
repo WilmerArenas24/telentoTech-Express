@@ -3,9 +3,7 @@ const router = express.Router();
 const HouseSchema = require('../models/House');
 require('dotenv').config();
 
-router.get('/house', async (req, res) => {
-    res.send('hola que tal');
-});
+
 
 // Ruta POST para agregar una nueva casa
 router.post('/house', async (req, res) => {
@@ -36,9 +34,9 @@ router.post('/house', async (req, res) => {
     }
 });
 
-
-router.get('/house-obtener', async (req, res) => {
-    //Traer todas las casas
+//Traer todas las casas
+router.get('/house', async (req, res) => {
+    
     let house = await HouseSchema.find(); 
     res.json(house)
 })
@@ -59,6 +57,8 @@ router.delete('/house/:id', (req, res) => {
         res.json({"status": "failed", "message": "Error deleting House"})    
     })
 })
+
+
 
 
 

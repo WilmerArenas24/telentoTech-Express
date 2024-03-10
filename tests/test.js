@@ -28,7 +28,7 @@ describe('GET /', () => {
 
         // test para la ruta para obtener las casas
         it('responds with an array object that contains an specific house', async () => { 
-            const response = await request(app).get('/house-obtener');
+            const response = await request(app).get('/house');
             
             const objectToTest = {
                 "_id": "65ea31365db6982faf31f152",
@@ -67,3 +67,19 @@ describe('POST /house', () => {
         expect(response.body.email).toBe(objectToTest.email)
     })
 })
+
+
+// test para la ruta de usuarios 
+
+describe('POST /house', () => {
+
+    it('responds with success message for valid house ID', async () => {
+        
+        const id = '65ed0db4f87cd9dd3ecebfcd';
+        const response = await request(app).delete(`/house/${id}`);
+
+        expect(response.status).toBe(200);
+        expect(response.body).toEqual({ "status": "success", "message": "House deleted successfully" });
+    });
+
+});
