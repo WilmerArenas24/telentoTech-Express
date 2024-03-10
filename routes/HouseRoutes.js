@@ -41,6 +41,13 @@ router.get('/house', async (req, res) => {
     res.json(house)
 })
 
+//Traer una de las casas
+router.get('/house/:id', async (req, res) => {
+    //Traer una casa en especifico pasando el ID
+    var id = req.params.id
+    let house = await HouseSchema.findById(id); 
+    res.json(house)
+})
 
 // Ruta DELETE para eliminar una casa por su ID
 router.delete('/house/:id', (req, res) => {    
@@ -52,7 +59,7 @@ router.delete('/house/:id', (req, res) => {
         // Enviar una respuesta JSON si la eliminación fue exitosa
         res.json({"status": "success", "message": "House deleted successfully"})    
     }).catch((error) => {        
-        // En caso de error, registrar el error en la consola y enviar una respuesta JSON indicando el fallo
+        //enviar una respuesta JSON indicando el fallo
         console.log(error)
         res.json({"status": "failed", "message": "Error deleting House"})    
     })
