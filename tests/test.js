@@ -28,7 +28,47 @@ it('responds with a specific house for valid house ID', async () => {
 });
 
 
+describe('POST /house', () => {
+    it('creates a new house in the DB and responds with the data', async () => {
+        // datos para una nueva casa
+        const objectToTest = {
+            address: 'Direccion de prueba',
+            city: 'Bogota',
+            state: 'Bogota',
+            size: 150,
+            type: 'Casa',
+            zip_code: '12345',
+            rooms: 3,
+            bathrooms: 2,
+            parking: true,
+            price: 200000,
+            code: 'ABC177',
+            image: 'imagen.jpg'
+        };
 
+        const response = await request(app)
+            .post('/house')
+            .send(objectToTest);
+
+        expect(response.status).toBe(200);
+        expect(response.body).toHaveProperty('_id');
+        expect(response.body.address).toBe(objectToTest.address);
+        expect(response.body.city).toBe(objectToTest.city)
+        expect(response.body.state).toBe(objectToTest.state)
+        expect(response.body.size).toBe(objectToTest.size)
+        expect(response.body.type).toBe(objectToTest.type)
+        expect(response.body.zip_code).toBe(objectToTest.zip_code)
+        expect(response.body.rooms).toBe(objectToTest.rooms)
+        expect(response.body.bathrooms).toBe(objectToTest.bathrooms)
+        expect(response.body.parking).toBe(objectToTest.parking)
+        expect(response.body.price).toBe(objectToTest.price)
+        expect(response.body.code).toBe(objectToTest.code)
+        expect(response.body.image).toBe(objectToTest.image)
+        
+    });
+
+    
+});
     
 /** Descripcion de la Prueba */
 describe('GET /', () => {
@@ -136,3 +176,5 @@ describe('PATCH /house/:id', () => {
         expect(response.body).toBeDefined();  
     });
 })
+
+
