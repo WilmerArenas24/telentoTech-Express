@@ -27,6 +27,9 @@ it('responds with a specific house for valid house ID', async () => {
     
 });
 
+
+
+    
 // /** Descripcion de la Prueba */
 // describe('GET /', () => {
 //     /** Descripcion especifica del caso a probar */
@@ -96,3 +99,32 @@ it('responds with a specific house for valid house ID', async () => {
 // });
 
 
+describe('PATCH /house/:id', () => {
+    it('responds with updated house for valid house ID and data', async () => {
+ 
+        const id = '65ed0db4f87cd9dd3ecebfcd';
+
+        // Supongamos que tienes datos actualizados para la casa
+        const updatedData = {
+            "address": "Avenida siempre viva 123",
+            "city": "Bogotá",
+            "state": "Bogotá",
+            "size": 2000,
+            "type": "House",
+            "zip_code": "54321",
+            "rooms": 2,
+            "bathrooms": 1,
+            "parking": false,
+            "price": 29000000,
+            "code": "ABC124",
+            "image": "https://example.com/property-image.jpg"
+        };
+
+        const response = await request(app)
+            .patch(/house/+id)
+            .send(updatedData);
+
+        expect(response.status).toBe(200);
+        expect(response.body).toBeDefined();  
+    });
+})
