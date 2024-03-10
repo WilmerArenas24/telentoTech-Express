@@ -23,7 +23,7 @@ it('responds with a specific house for valid house ID', async () => {
     const response = await request(app).get(/house/+id);
 
     expect(response.status).toBe(200);
-    expect(response.body).toBeDefined();  // Asegura que la respuesta no sea nula o indefinida
+    expect(response.body).toBeDefined();  
     
 });
 
@@ -75,9 +75,18 @@ describe('POST /house', () => {
 
         expect(response.statusCode).toBe(200)
         expect(response.body).toHaveProperty('_id')
-        expect(response.body.name).toBe(objectToTest.name)
-        expect(response.body.lastname).toBe(objectToTest.lastname)
-        expect(response.body.email).toBe(objectToTest.email)
+        expect(response.body.address).toBe(objectToTest.address)
+        expect(response.body.city).toBe(objectToTest.city)
+        expect(response.body.state).toBe(objectToTest.state)
+        expect(response.body.size).toBe(objectToTest.size)
+        expect(response.body.type).toBe(objectToTest.type)
+        expect(response.body.zip_code).toBe(objectToTest.zip_code)
+        expect(response.body.rooms).toBe(objectToTest.rooms)
+        expect(response.body.bathrooms).toBe(objectToTest.bathrooms)
+        expect(response.body.parking).toBe(objectToTest.parking)
+        expect(response.body.price).toBe(objectToTest.price)
+        expect(response.body.code).toBe(objectToTest.code)
+        expect(response.body.image).toBe(objectToTest.image)
     })
 })
 
@@ -103,7 +112,7 @@ describe('PATCH /house/:id', () => {
  
         const id = '65ed0db4f87cd9dd3ecebfcd';
 
-        // Supongamos que tienes datos actualizados para la casa
+        // datos a actyualizar 
         const updatedData = {
             "address": "Avenida siempre viva 123",
             "city": "Bogotá",
