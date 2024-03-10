@@ -65,6 +65,35 @@ router.delete('/house/:id', (req, res) => {
     })
 })
 
+// Actualizar una casa 
+router.patch('/house/:id', (req, res) => {
+    //Actualizar una casa
+    // Cuando viene por la url del servicio web params
+    var id = req.params.id
+    
+    // Cuando viene por el body se usa body
+    var updateHouse = {
+        address: req.body.address,
+        city: req.body.city,
+        state: req.body.state,
+        size: req.body.size,
+        type: req.body.type,
+        zip_code: req.body.zip_code,
+        rooms: req.body.rooms,
+        bathrooms: req.body.bathrooms,
+        parking: req.body.parking,
+        price: req.body.price,
+        code: req.body.code,
+        image: req.body.image
+    }
+
+    HouseSchema.findByIdAndUpdate(id, updateHouse, {new: true}).then((result) => {
+        res.send(result)
+    }).catch((error) => {
+        console.log(error)
+        res.send("Error actualizando el registro")
+    })
+})
 
 
 
